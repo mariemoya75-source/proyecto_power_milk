@@ -1,0 +1,6 @@
+{
+  "appId": "com.tuempresa.powermilk",
+  "appName": "Power Milk",
+  "webDir": ".",
+  "bundledWebRuntime": false
+}

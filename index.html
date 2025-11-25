@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Mill - Sistema de Gestión</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="auth-section" class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1><i class="fas fa-industry"></i> Power Mill</h1>
+                <p>Sistema de Gestión de Productos Lácteos</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="usuario@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="Ingrese su contraseña" required>
+                </div>
+                <button type="submit" class="auth-btn">Iniciar Sesión</button>
+                <div class="auth-switch">
+                    ¿No tienes una cuenta? <a href="#" id="show-register">Regístrate</a>
+                </div>
+            </form>
+            
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="register-name">Nombre Completo</label>
+                    <input type="text" id="register-name" class="form-control" placeholder="Ingrese su nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Correo Electrónico</label>
+                    <input type="email" id="register-email" class="form-control" placeholder="usuario@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" class="form-control" placeholder="Cree una contraseña segura" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirmar Contraseña</label>
+                    <input type="password" id="register-confirm" class="form-control" placeholder="Repita su contraseña" required>
+                </div>
+                <button type="submit" class="auth-btn">Crear Cuenta</button>
+                <div class="auth-switch">
+                    ¿Ya tienes una cuenta? <a href="#" id="show-login">Inicia Sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Dashboard Section -->
+    <div id="dashboard-section" class="hidden">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-industry"></i> Power Mill</h1>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-section="dashboard"><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li data-section="orders"><a href="#"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                <li data-section="products"><a href="#"><i class="fas fa-box"></i> Productos</a></li>
+                <li data-section="clients"><a href="#"><i class="fas fa-users"></i> Clientes</a></li>
+                <li data-section="reports"><a href="#"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+                <li data-section="settings"><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 id="page-title">Dashboard - Administrador de Pedidos</h2>
+                </div>
+                <div class="user-info">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=Usuario&background=2c5aa0&color=fff" alt="Usuario">
+                    <span id="user-name">Usuario</span>
+                    <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+            
+            <!-- Dashboard Section -->
+            <div class="section active" id="dashboard">
+                <!-- Dashboard Cards -->
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Total de Pedidos</h3>
+                        <div class="value">142</div>
+                    </div>
+                    <div class="card pending">
+                        <h3>Pedidos Pendientes</h3>
+                        <div class="value">24</div>
+                    </div>
+                    <div class="card completed">
+                        <h3>Pedidos Completados</h3>
+                        <div class="value">115</div>
+                    </div>
+                    <div class="card cancelled">
+                        <h3>Pedidos Cancelados</h3>
+                        <div class="value">3</div>
+                    </div>
+                </div>
+                
+                <!-- Gráficas del Dashboard -->
+                <div class="charts-container">
+                    <div class="chart">
+                        <h3>Ventas por Producto</h3>
+                        <canvas id="salesByProductChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <h3>Pedidos por Estado</h3>
+                        <canvas id="ordersByStatusChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Orders -->
+                <div class="table-container">
+                    <h3 style="padding: 15px; background-color: #f5f7fa; margin: 0;">Pedidos Recientes</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-table">
+                            <!-- Los pedidos recientes se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Orders Section -->
+            <div class="section" id="orders">
+                <h3>Gestión de Pedidos</h3>
+                
+                <!-- Formulario para agregar pedido -->
+                <div class="form-container">
+                    <h3>Agregar Nuevo Pedido</h3>
+                    <form id="order-form">
+                        <div class="form-group">
+                            <label for="client-name">Nombre del Cliente</label>
+                            <input type="text" id="client-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product">Producto</label>
+                            <select id="product" class="form-control" required>
+                                <option value="">Seleccione un producto</option>
+                                <option value="leche">Leche Entera (1L)</option>
+                                <option value="yogurt">Yogurt Natural (500g)</option>
+                                <option value="queso">Queso Fresco (250g)</option>
+                                <option value="mantequilla">Mantequilla (200g)</option>
+                                <option value="crema">Crema de Leche (250ml)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Cantidad</label>
+                            <input type="number" id="quantity" class="form-control" min="1" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Estado</label>
+                            <select id="status" class="form-control" required>
+                                <option value="pending">Pendiente</option>
+                                <option value="completed">Completado</option>
+                                <option value="cancelled">Cancelado</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar Pedido</button>
+                    </form>
+                </div>
+                
+                <!-- Tabla de pedidos -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table">
+                            <!-- Los pedidos se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Products Section -->
+            <div class="section" id="products">
+                <h3>Gestión de Productos</h3>
+                
+                <div class="form-container">
+                    <h3>Agregar Nuevo Producto</h3>
+                    <form id="product-form">
+                        <div class="form-group">
+                            <label for="product-name">Nombre del Producto</label>
+                            <input type="text" id="product-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-category">Categoría</label>
+                            <select id="product-category" class="form-control" required>
+                                <option value="">Seleccione una categoría</option>
+                                <option value="leche">Leche</option>
+                                <option value="yogurt">Yogurt</option>
+                                <option value="queso">Queso</option>
+                                <option value="mantequilla">Mantequilla</option>
+                                <option value="crema">Crema</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-price">Precio (C$)</label>
+                            <input type="number" id="product-price" class="form-control" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-stock">Stock</label>
+                            <input type="number" id="product-stock" class="form-control" min="0" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                    </form>
+                </div>
+                
+                <h3 style="margin-top: 30px;">Lista de Productos</h3>
+                <div class="products-grid" id="products-grid">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- Clients Section -->
+            <div class="section" id="clients">
+                <h3>Gestión de Clientes</h3>
+                
+                <div class="form-container">
+                    <h3>Agregar Nuevo Cliente</h3>
+                    <form id="client-form">
+                        <div class="form-group">
+                            <label for="client-fullname">Nombre Completo</label>
+                            <input type="text" id="client-fullname" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client-email">Email</label>
+                            <input type="email" id="client-email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client-phone">Teléfono</label>
+                            <input type="tel" id="client-phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client-address">Dirección</label>
+                            <textarea id="client-address" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar Cliente</button>
+                    </form>
+                </div>
+                
+                <h3 style="margin-top: 30px;">Lista de Clientes</h3>
+                <div class="client-list" id="client-list">
+                    <!-- Los clientes se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+            
+            <!-- Reports Section -->
+            <div class="section" id="reports">
+                <h3>Reportes y Estadísticas</h3>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Ventas del Mes</h3>
+                        <div class="value">C$ 42,450</div>
+                    </div>
+                    <div class="card">
+                        <h3>Producto Más Vendido</h3>
+                        <div class="value">Leche Entera</div>
+                    </div>
+                    <div class="card">
+                        <h3>Clientes Nuevos</h3>
+                        <div class="value">18</div>
+                    </div>
+                    <div class="card">
+                        <h3>Pedidos Promedio/Día</h3>
+                        <div class="value">24</div>
+                    </div>
+                </div>
+                
+                <div class="charts-container">
+                    <div class="chart">
+                        <h3>Ventas por Producto</h3>
+                        <canvas id="productSalesChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <h3>Pedidos por Estado</h3>
+                        <canvas id="orderStatusChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <h3>Evolución Mensual</h3>
+                        <canvas id="monthlyTrendChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <h3>Clientes por Región</h3>
+                        <canvas id="clientsByRegionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Section -->
+            <div class="section" id="settings">
+                <h3>Configuración del Sistema</h3>
+                
+                <div class="form-container settings-form">
+                    <h3>Configuración General</h3>
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label for="company-name">Nombre de la Empresa</label>
+                            <input type="text" id="company-name" class="form-control" value="Power Mill" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company-email">Email de Contacto</label>
+                            <input type="email" id="company-email" class="form-control" value="contacto@powermill.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company-phone">Teléfono</label>
+                            <input type="tel" id="company-phone" class="form-control" value="+505 2345 6789" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company-address">Dirección</label>
+                            <textarea id="company-address" class="form-control" rows="3">Av. Principal #123, Managua, Nicaragua</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="currency">Moneda</label>
+                            <select id="currency" class="form-control" required>
+                                <option value="NIO" selected>Córdoba Nicaragüense (C$)</option>
+                                <option value="USD">Dólar Estadounidense (USD)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

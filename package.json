@@ -1,0 +1,21 @@
+{
+  "name": "power-milk-sistema",
+  "version": "1.0.0",
+  "description": "Sistema de facturación Power Milk - servidor de desarrollo",
+  "scripts": {
+    "serve": "node scripts/serve.js",
+    "serve:python": "python -m http.server 8000",
+    "serve:win": "powershell -ExecutionPolicy Bypass -File serve.ps1 -Port 8000",
+    "cap:init": "npx cap init \"Power Milk\" com.tuempresa.powermilk --web-dir=.",
+    "cap:copy": "npx cap copy",
+    "cap:add-android": "npx cap add android",
+    "cap:open-android": "npx cap open android",
+    "cap:sync": "npx cap sync"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@capacitor/cli": "^5.0.0",
+    "@capacitor/core": "^5.0.0"
+  }
+}
